@@ -1,20 +1,28 @@
-name: Run Python on Windows
+name: Pull Request Checks
+
 on:
-  pull:
+  pull_request:
     branches:
-      - '**'  # Trigger on push to any branch
+      - main  # or the branch you want to target
+
 jobs:
-  run-python-script:
-    runs-on: windows-latest
+  build:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'  # You can change the version if needed
+    - name: Set up Node.js (example for JS projects)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
 
-      - name: Run Python Script
-        run: python hello.py
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run Lint
+      run: npm run lint
+
+    - name: Run Tests
+      run: npm test
